@@ -9,12 +9,13 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-aut
 import { getStorage } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-storage.js";
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+   apiKey: "AIzaSyBgQQKA3HIRW1DYxTR8S6BfUn3T84InNzo",
+  authDomain: "idex-logistics.firebaseapp.com",
+  projectId: "idex-logistics",
+  storageBucket: "idex-logistics.firebasestorage.app",
+  messagingSenderId: "1035854772632",
+  appId: "1:1035854772632:web:f4880c9aabc279db7d53ed",
+  measurementId: "G-ZPSCX2NZF4"
 };
 
 export const app = initializeApp(firebaseConfig);
