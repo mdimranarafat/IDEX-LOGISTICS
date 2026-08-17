@@ -202,9 +202,159 @@
     .eyebrow::before{ animation:none; }
     .card{ transition:none; }
   }
+
+  /* ---------- NAV ---------- */
+  .site-nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(10,14,26,0.85); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .site-nav .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-top:18px; padding-bottom:18px;
+  }
+  .nav-logo{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:18px; letter-spacing:-0.01em; }
+  .nav-links{ display:flex; align-items:center; gap:30px; }
+  .nav-links a{
+    font-size:13.5px; color:var(--fog); font-weight:500; transition:color .2s ease;
+  }
+  .nav-links a:hover{ color:var(--white); }
+  .nav-cta{ background:var(--signal); color:#fff !important; padding:9px 18px; border-radius:8px; font-weight:600 !important; }
+  .nav-cta:hover{ background:#5b93ff !important; color:#fff !important; }
+  .nav-toggle{ display:none; background:none; border:1px solid var(--line); border-radius:8px; padding:8px 10px; color:var(--white); }
+  @media (max-width: 860px){
+    .nav-links{
+      position:absolute; top:100%; left:0; right:0; flex-direction:column; align-items:flex-start;
+      background:var(--ink); border-bottom:1px solid var(--line); padding:18px 20px; gap:18px;
+      display:none;
+    }
+    .nav-links.open{ display:flex; }
+    .nav-toggle{ display:inline-flex; }
+  }
+
+  /* ---------- PORTFOLIO ---------- */
+  .portfolio{ padding:100px 0; border-bottom:1px solid var(--line); }
+  .portfolio .services-head .eyebrow{ color:var(--signal); }
+  .portfolio .services-head .eyebrow::before{ background:var(--signal); box-shadow:0 0 0 4px var(--signal-soft); }
+  .portfolio-note{
+    border:1px dashed var(--line); border-radius:var(--radius); padding:40px;
+    text-align:center; color:var(--fog); font-size:14.5px;
+  }
+
+  /* ---------- COMPLETED PROJECTS ---------- */
+  .cp{ padding:100px 0; }
+  .cp-filters{
+    display:flex; gap:10px; flex-wrap:nowrap; overflow-x:auto; padding-bottom:8px; margin-bottom:44px;
+    -ms-overflow-style:none; scrollbar-width:none;
+  }
+  .cp-filters::-webkit-scrollbar{ display:none; }
+  .cp-filter-btn{
+    flex:none; padding:9px 16px; border-radius:20px; border:1px solid var(--line);
+    color:var(--fog); font-size:13px; font-weight:500; background:transparent; cursor:pointer;
+    transition:all .2s ease; font-family:'Inter',sans-serif;
+  }
+  .cp-filter-btn:hover{ border-color:var(--signal); color:var(--white); }
+  .cp-filter-btn.active{ background:var(--signal); border-color:var(--signal); color:#fff; }
+
+  .featured-wrap{ margin-bottom:64px; }
+  .featured-wrap[hidden]{ display:none; }
+  .featured-label{
+    font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.12em; color:var(--cargo);
+    margin-bottom:18px;
+  }
+
+  .cp-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:22px;
+    transition:opacity .25s ease;
+  }
+  .cp-grid.filtering{ opacity:0.3; }
+  .project-card{
+    background:var(--ink-light); border:1px solid var(--line); border-radius:var(--radius);
+    overflow:hidden; display:flex; flex-direction:column; cursor:pointer;
+    transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+  }
+  .project-card:hover{
+    transform:translateY(-4px); border-color:rgba(61,127,255,0.45);
+    box-shadow:0 0 0 1px rgba(61,127,255,0.15), 0 20px 40px -20px rgba(61,127,255,0.35);
+  }
+  .project-thumb{
+    width:100%; aspect-ratio:16/10; background:var(--ink-lighter) center/cover no-repeat;
+    display:flex; align-items:center; justify-content:center; color:var(--fog); font-size:12px;
+    font-family:'JetBrains Mono',monospace;
+  }
+  .project-body{ padding:22px 22px 24px; display:flex; flex-direction:column; flex:1; }
+  .project-cat{
+    font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:0.08em; color:var(--signal);
+    text-transform:uppercase; margin-bottom:10px;
+  }
+  .project-body h3{ font-size:18px; font-weight:600; }
+  .project-desc{ font-size:13.5px; color:var(--fog); margin-top:8px; flex-grow:1; }
+  .project-meta{ display:flex; flex-wrap:wrap; gap:7px; margin-top:16px; }
+  .project-meta span{
+    font-size:11px; padding:5px 10px; border-radius:6px; background:var(--ink-lighter);
+    color:var(--fog); font-family:'JetBrains Mono',monospace;
+  }
+  .project-foot{
+    margin-top:18px; padding-top:16px; border-top:1px solid var(--line);
+    display:flex; align-items:center; justify-content:space-between; font-size:12.5px; color:var(--fog);
+  }
+  .project-foot .view{ color:var(--white); font-weight:600; }
+
+  .cp-empty{
+    border:1px dashed var(--line); border-radius:var(--radius); padding:64px 40px; text-align:center;
+  }
+  .cp-empty h3{ font-size:22px; font-weight:600; }
+  .cp-empty p{ color:var(--fog); margin-top:10px; max-width:420px; margin-left:auto; margin-right:auto; }
+
+  /* modal */
+  .cp-modal-overlay{
+    position:fixed; inset:0; background:rgba(5,7,13,0.75); backdrop-filter:blur(4px);
+    display:none; align-items:center; justify-content:center; z-index:200; padding:24px;
+  }
+  .cp-modal-overlay.open{ display:flex; }
+  .cp-modal{
+    background:var(--ink-light); border:1px solid var(--line); border-radius:18px;
+    max-width:720px; width:100%; max-height:88vh; overflow-y:auto;
+  }
+  .cp-modal-thumb{ width:100%; aspect-ratio:16/9; background:var(--ink-lighter) center/cover no-repeat; }
+  .cp-modal-body{ padding:32px; }
+  .cp-modal-close{
+    position:sticky; top:16px; float:right; margin:0 16px 0 0;
+    background:rgba(10,14,26,0.7); border:1px solid var(--line); color:var(--white);
+    width:36px; height:36px; border-radius:50%; cursor:pointer; font-size:16px;
+  }
+  .cp-modal h3{ font-size:26px; font-weight:700; margin-top:6px; }
+  .cp-modal-meta{ display:flex; flex-wrap:wrap; gap:10px; margin:16px 0; font-size:13px; color:var(--fog); }
+  .cp-modal-meta span strong{ color:var(--white); }
+  .cp-modal-desc{ color:var(--fog); font-size:14.5px; line-height:1.7; margin-top:6px; }
+  .cp-modal-gallery{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:20px; }
+  .cp-modal-gallery img{ width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:8px; }
+  body.modal-open{ overflow:hidden; }
+
+  @media (max-width:980px){
+    .cp-grid{ grid-template-columns:repeat(2,1fr); }
+  }
+  @media (max-width:620px){
+    .cp-grid{ grid-template-columns:1fr; }
+    .cp-modal-gallery{ grid-template-columns:repeat(2,1fr); }
+  }
 </style>
 </head>
 <body>
+
+<!-- NAV -->
+<nav class="site-nav">
+  <div class="wrap">
+    <a href="#" class="nav-logo">IDEX</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    <div class="nav-links" id="navLinks">
+      <a href="#services">Services</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="#completed-projects">Completed Projects</a>
+      <a href="#contact" class="nav-cta">Contact</a>
+    </div>
+  </div>
+</nav>
 
 <!-- HERO -->
 <section class="hero">
@@ -407,6 +557,73 @@
   </div>
 </section>
 
+<!-- PORTFOLIO -->
+<section class="portfolio" id="portfolio">
+  <div class="wrap">
+    <div class="services-head">
+      <div class="eyebrow">Selected Work</div>
+      <h2>Portfolio</h2>
+      <p>Showcase concepts and featured capabilities across our disciplines.</p>
+    </div>
+    <div class="portfolio-note">Portfolio pieces coming soon. In the meantime, browse our published Completed Projects below.</div>
+  </div>
+</section>
+
+<!-- COMPLETED PROJECTS (Firebase-powered) -->
+<section class="cp" id="completed-projects">
+  <div class="wrap">
+    <div class="services-head">
+      <div class="eyebrow">Our Work</div>
+      <h2>Completed Projects</h2>
+      <p>A selection of websites, platforms, SaaS products, and digital experiences we've built.</p>
+    </div>
+
+    <div class="featured-wrap" id="featuredWrap" hidden>
+      <div class="featured-label">FEATURED PROJECTS</div>
+      <div class="cp-grid" id="featuredGrid"></div>
+    </div>
+
+    <div class="cp-filters" id="cpFilters">
+      <button class="cp-filter-btn active" data-filter="All">All</button>
+      <button class="cp-filter-btn" data-filter="Website">Websites</button>
+      <button class="cp-filter-btn" data-filter="E-commerce">E-commerce</button>
+      <button class="cp-filter-btn" data-filter="SaaS">SaaS</button>
+      <button class="cp-filter-btn" data-filter="Booking System">Booking Systems</button>
+      <button class="cp-filter-btn" data-filter="Web Application">Web Applications</button>
+      <button class="cp-filter-btn" data-filter="Logistics">Logistics</button>
+      <button class="cp-filter-btn" data-filter="Creative / Video">Creative</button>
+      <button class="cp-filter-btn" data-filter="Branding">Branding</button>
+      <button class="cp-filter-btn" data-filter="Other">Other</button>
+    </div>
+
+    <div class="cp-grid" id="cpGrid"></div>
+
+    <div class="cp-empty" id="cpEmpty" hidden>
+      <h3>Projects Coming Soon</h3>
+      <p>New projects will appear here as we continue building innovative solutions for our clients.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECT DETAILS MODAL -->
+<div class="cp-modal-overlay" id="cpModalOverlay">
+  <div class="cp-modal">
+    <button class="cp-modal-close" id="cpModalClose" aria-label="Close">✕</button>
+    <div class="cp-modal-thumb" id="cpModalThumb"></div>
+    <div class="cp-modal-body">
+      <div class="project-cat" id="cpModalCat"></div>
+      <h3 id="cpModalTitle"></h3>
+      <div class="cp-modal-meta" id="cpModalMeta"></div>
+      <p class="cp-modal-desc" id="cpModalDesc"></p>
+      <div class="project-meta" id="cpModalTech" style="margin-top:18px;"></div>
+      <div class="cp-modal-gallery" id="cpModalGallery"></div>
+      <div class="hero-ctas" id="cpModalUrlWrap" style="margin-top:26px;" hidden>
+        <a id="cpModalUrl" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary">View Project →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- CTA -->
 <section class="cta" id="cta">
   <div class="wrap">
@@ -445,5 +662,16 @@
   </div>
 </section>
 
+<script>
+  document.getElementById('navToggle').addEventListener('click', () => {
+    const links = document.getElementById('navLinks');
+    const open = links.classList.toggle('open');
+    document.getElementById('navToggle').setAttribute('aria-expanded', open);
+  });
+  document.getElementById('navLinks').addEventListener('click', e => {
+    if (e.target.tagName === 'A') document.getElementById('navLinks').classList.remove('open');
+  });
+</script>
+<script type="module" src="./public-projects.js"></script>
 </body>
 </html>
