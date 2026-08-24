@@ -1,4 +1,4 @@
-import { auth, db } from './firebase-config.js';
+import { auth, db, configIsPlaceholder } from './firebase-config.js';
 import {
   onAuthStateChanged, signInWithEmailAndPassword, signOut
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
@@ -12,16 +12,65 @@ const loginScreen = document.getElementById('loginScreen');
 const adminShell = document.getElementById('adminShell');
 const loginForm = document.getElementById('loginForm');
 const loginError = document.getElementById('loginError');
+const loginSubmitBtn = loginForm.querySelector('button[type="submit"]');
+
+function setLoginStatus(msg) { loginError.textContent = msg || ''; }
+
+function describeAuthError(err) {
+  const code = err?.code || '';
+  switch (code) {
+    case 'auth/invalid-credential':
+    case 'auth/invalid-login-credentials':
+    case 'auth/user-not-found':
+    case 'auth/wrong-password':
+      return 'Invalid email or password.';
+    case 'auth/invalid-email':
+      return 'That email address is not valid.';
+    case 'auth/user-disabled':
+      return 'This account has been disabled.';
+    case 'auth/too-many-requests':
+      return 'Too many failed attempts. Wait a moment and try again.';
+    case 'auth/network-request-failed':
+      return 'Network error — check your internet connection and try again.';
+    case 'auth/configuration-not-found':
+    case 'auth/operation-not-allowed':
+      return 'Email/Password sign-in is not enabled. Enable it in Firebase Console → Authentication → Sign-in method.';
+    case 'auth/invalid-api-key':
+    case 'auth/api-key-not-valid':
+      return 'Firebase API key is missing or invalid — check firebase-config.js.';
+    case 'auth/unauthorized-domain':
+      return `This domain (${location.hostname}) is not authorized. Add it in Firebase Console → Authentication → Settings → Authorized domains.`;
+    default:
+      return (err?.message ? err.message : 'Sign-in failed.') + (code ? ` (${code})` : '');
+  }
+}
 
 loginForm.addEventListener('submit', async (e) => {
   e.preventDefault();
-  loginError.textContent = '';
+  setLoginStatus('');
+
+  // Fail fast if the project was never configured — Firebase will only
+  // return a cryptic auth/invalid-api-key otherwise.
+  if (configIsPlaceholder) {
+    setLoginStatus('Firebase is not configured yet. Open firebase-config.js and paste your real project keys.');
+    return;
+  }
+
   const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value;
+
+  loginSubmitBtn.disabled = true;
+  const originalLabel = loginSubmitBtn.textContent;
+  loginSubmitBtn.textContent = 'Signing in…';
   try {
     await signInWithEmailAndPassword(auth, email, password);
+    // On success onAuthStateChanged below takes over (role check + panel).
   } catch (err) {
-    loginError.textContent = 'Invalid email or password.';
+    console.error('Sign-in failed:', err?.code, err?.message, err);
+    setLoginStatus(describeAuthError(err));
+  } finally {
+    loginSubmitBtn.disabled = false;
+    loginSubmitBtn.textContent = originalLabel;
   }
 });
 
@@ -36,19 +85,35 @@ onAuthStateChanged(auth, async (user) => {
     if (unsubscribeProjects) { unsubscribeProjects(); unsubscribeProjects = null; }
     return;
   }
+
+  // Signed in successfully — verify the admin role in Firestore before
+  // revealing the panel. Show a visible state so this doesn't look "stuck".
+  setLoginStatus('Verifying admin access…');
   try {
     const userDoc = await getDoc(doc(db, 'users', user.uid));
     const role = userDoc.exists() ? userDoc.data().role : null;
     if (role !== 'admin') {
-      loginError.textContent = 'This account does not have admin access.';
+      console.warn(
+        `Signed in as ${user.email}, but users/${user.uid} does not exist or does not have role === "admin".`
+      );
+      setLoginStatus(
+        `Signed in as ${user.email}, but this account has no admin role. In Firestore create collection ` +
+        `"users" with document ID "${user.uid}" containing field role (string) = "admin", then log in again.`
+      );
       await signOut(auth);
       return;
     }
   } catch (err) {
-    loginError.textContent = 'Could not verify admin access. Try again.';
+    console.error('Admin role verification failed:', err?.code, err?.message, err);
+    setLoginStatus(
+      'Could not verify admin access' + (err?.code ? ` (${err.code})` : '') +
+      '. Make sure firestore.rules are published in the Firebase Console, then try again.'
+    );
     await signOut(auth);
     return;
   }
+
+  setLoginStatus('');
   loginScreen.style.display = 'none';
   adminShell.classList.add('active');
   subscribeProjects();
