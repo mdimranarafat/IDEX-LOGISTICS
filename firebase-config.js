@@ -3,9 +3,9 @@
 // Paste your real Firebase project config below.
 // Get it from: Firebase Console → Project Settings → General → Your apps → SDK setup and config
 // ============================================================
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com./firebasejs/10.13.0/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com./firebasejs/10.13.0/firebase-firestore.js";
+import { getAuth } from "https://www.gstatic.com./firebasejs/10.13.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBgQQKA3HIRW1DYxTR8S6BfUn3T84InNzo",
