@@ -20,3 +20,18 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
+
+// Fail-fast check: if this file still contains placeholder values,
+// Authentication can never work (every sign-in attempt fails with
+// auth/invalid-api-key). admin-app.js uses this flag to show a clear
+// message on the login screen instead of a generic failure.
+export const configIsPlaceholder = Object.values(firebaseConfig)
+  .some(v => typeof v === 'string' && v.startsWith('YOUR_'));
+
+if (configIsPlaceholder) {
+  console.error(
+    '[IDEX] firebase-config.js is NOT configured yet. Replace the YOUR_* ' +
+    'placeholders with your real Firebase web app config ' +
+    '(Firebase Console → Project Settings → General → Your apps).'
+  );
+}
